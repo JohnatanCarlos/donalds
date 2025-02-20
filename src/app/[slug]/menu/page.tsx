@@ -1,8 +1,9 @@
 "use server"
 
-import { getRestaurantBySlug } from "@/data/get-restaurant-by-slug";
+import { getRestaurantBySlugWithCategoriesAndProducts } from "@/data/get-restaurant-by-slug";
 import { notFound } from "next/navigation";
 import RestaurantHeader from "./components/header";
+import RestaurantCategories from "./components/categories";
 
 interface MenuPageProps {
     params: Promise<{slug: string}>
@@ -21,7 +22,7 @@ const MenuPage = async ({params, searchParams}: MenuPageProps) => {
         return notFound();
     }
 
-    const restaurant = await getRestaurantBySlug(slug);
+    const restaurant = await getRestaurantBySlugWithCategoriesAndProducts(slug);
     if(!restaurant) {
         return notFound();
     }
@@ -29,6 +30,7 @@ const MenuPage = async ({params, searchParams}: MenuPageProps) => {
     return ( 
        <div>
             <RestaurantHeader restaurant={restaurant} />
+            <RestaurantCategories restaurant={restaurant}/>
        </div>
     );
 }
